@@ -1,0 +1,38 @@
+version: '3.8'
+
+services:
+  backend:
+    build: ./backend
+    container_name: mes-backend
+    ports:
+      - "8000:8000"
+    volumes:
+      - ./backend:/app
+      - sqlite_data:/app/data
+    environment:
+      - DATABASE_URL=sqlite:///./data/mes.db
+      - SQL_SERVER_CONNECTION_STRING=${SQL_SERVER_CONNECTION_STRING}
+      - ERP_API_URL=${ERP_API_URL}
+      - ERP_API_KEY=${ERP_API_KEY}
+      - SYNC_INTERVAL_MINUTES=20
+    restart: unless-stopped
+    networks:
+      - mes-network
+
+  frontend:
+    build: ./frontend
+    container_name: mes-frontend
+    ports:
+      - "80:80"
+    depends_on:
+      - backend
+    restart: unless-stopped
+    networks:
+      - mes-network
+
+volumes:
+  sqlite_data:
+
+networks:
+  mes-network:
+    driver: bridge
