@@ -70,7 +70,7 @@ export default function WarpPage() {
 
   // Timer for warp operation
   useEffect(() => {
-    let interval: NodeJS.Timeout | null = null
+    let interval: number | null = null
     if (warpInProgress) {
       interval = setInterval(() => {
         setElapsedTime(prev => prev + 1)

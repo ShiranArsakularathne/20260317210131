@@ -23,7 +23,6 @@ import {
   Menu as MenuIcon,
   Home as HomeIcon,
   Factory as FactoryIcon,
-  Settings as SettingsIcon,
   Logout as LogoutIcon,
   ExpandLess,
   ExpandMore,
