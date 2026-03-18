@@ -11,7 +11,7 @@ echo "Date: $(date)"
 echo ""
 
 # Configuration
-GIT_REPO="https://github.com/your-company/mes-system.git"
+GIT_REPO="https://github.com/ShiranArsakularathne/20260317210131"
 DOCKER_COMPOSE_FILE="docker-compose.yml"
 ENV_FILE=".env"
 
