@@ -8,16 +8,21 @@ RUN apt-get update && apt-get install -y \
     g++ \
     unixodbc-dev \
     curl \
+    gnupg \
+    gnupg2 \
     && rm -rf /var/lib/apt/lists/*
 
 # Install SQL Server ODBC driver
-RUN curl https://packages.microsoft.com/keys/microsoft.asc | apt-key add - \
-    && curl https://packages.microsoft.com/config/debian/10/prod.list > /etc/apt/sources.list.d/mssql-release.list \
+RUN curl -sSL https://packages.microsoft.com/keys/microsoft.asc -o microsoft.asc \
+    && gpg --dearmor microsoft.asc \
+    && mv microsoft.asc.gpg /etc/apt/trusted.gpg.d/microsoft.gpg \
+    && curl -sSL https://packages.microsoft.com/config/debian/11/prod.list -o /etc/apt/sources.list.d/mssql-release.list \
     && apt-get update \
     && ACCEPT_EULA=Y apt-get install -y msodbcsql17 \
     && apt-get install -y mssql-tools \
     && echo 'export PATH="$PATH:/opt/mssql-tools/bin"' >> ~/.bashrc \
-    && apt-get clean
+    && apt-get clean \
+    && rm -f microsoft.asc
 
 COPY requirements.txt .
 RUN pip install --no-cache-dir -r requirements.txt
