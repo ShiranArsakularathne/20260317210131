@@ -106,22 +106,81 @@ sudo netstat -tlnp | grep -E ':(80|8000)'
 If you actually deployed locally but Docker isn't installed:
 
 1. **Install Docker Desktop**: https://www.docker.com/products/docker-desktop/
-2. **Start Docker Desktop**
+2. **Start Docker Desktop** (from Start Menu, wait for system tray icon)
 3. **Run the start script**:
    ```bash
    cd c:\Users\shirana\CodeBuddy\ElastiMES
    start.bat
    ```
 
+## New Diagnostic Tools Created
+
+To help diagnose your specific issues, several new tools have been created:
+
+### 1. `check_system.bat` - Comprehensive System Check
+Run this to diagnose your current Windows environment:
+```cmd
+check_system.bat
+```
+This will check:
+- Docker installation and service status
+- Docker Compose availability
+- Port availability (80, 8000)
+- Running containers
+- Project structure
+
+### 2. `INSTALL_DOCKER.md` - Docker Installation Guide
+Detailed instructions for installing Docker Desktop on Windows with troubleshooting tips.
+
+### 3. Updated `start.bat` - Better Docker Compose Detection
+The start script now detects both `docker-compose` and `docker compose` (plugin).
+
+## Quick Diagnostic Flowchart
+
+```
+Error: "docker-compose: command not found"
+        ↓
+1. Are you on the right machine?
+   - If deployed to remote server → Use server IP, not localhost
+   - If local → Install Docker Desktop
+        ↓
+2. Run check_system.bat
+        ↓
+3. Follow recommendations
+```
+
+## Common Error Patterns & Solutions
+
+### Error: `docker-compose: command not found`
+**Cause**: Docker Compose not installed or not in PATH
+**Solution**:
+1. **On Windows**: Install Docker Desktop (includes Docker Compose)
+2. **On Linux**: Install docker-compose-plugin or use `docker compose` (plugin)
+3. **Alternative**: Use `docker compose` (without hyphen) if available
+
+### Error: `curl: (7) Failed to connect to localhost port 8000`
+**Cause**: Services not running on localhost
+**Solutions**:
+1. **If deployed remotely**: Use server IP instead of localhost
+2. **If local**: Start services with `start.bat`
+3. **Check if containers are running**: `docker ps | findstr mes-`
+
+### Error: `docker: command not found`
+**Cause**: Docker not installed
+**Solution**: Install Docker Desktop for Windows
+
 ## Need More Help?
 
-1. **Check deployment logs** - Look for the server IP address
-2. **Contact your cloud provider** - For SSH access and firewall configuration
-3. **Run the diagnostic script** on the server:
-   ```bash
-   cd /path/to/ElastiMES/scripts
-   ./diagnose_deployment.sh
+1. **Run comprehensive diagnostics**:
+   ```cmd
+   cd c:\Users\shirana\CodeBuddy\ElastiMES
+   check_system.bat
+   scripts\diagnose_deployment.bat
    ```
+
+2. **Check deployment logs** - Look for the server IP address
+3. **Contact your cloud provider** - For SSH access and firewall configuration
+4. **Review INSTALL_DOCKER.md** - For Docker installation guidance
 
 ## Files Created for This Solution
 
@@ -129,3 +188,6 @@ If you actually deployed locally but Docker isn't installed:
 2. `backend/create_admin.py` - Admin user creation script
 3. `scripts/create_admin_api.py` - API-based admin creation
 4. `scripts/create_admin.bat` - Windows admin creation script
+5. `check_system.bat` - Comprehensive system diagnostic
+6. `INSTALL_DOCKER.md` - Docker installation guide
+7. `QUICK_START.bat` - Step-by-step quick start guide
